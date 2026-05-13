@@ -49,11 +49,6 @@ const getAllProduct = (target = "#products", total = 8) => {
       const element = select(target, false);
       if (element) {
         for (let i = 0; i < total; i++) {
-          if (!data[i]) break; // Prevents crash if dataset has fewer items than total requested
-          
-          // Formats numbers cleanly into Kenyan currency formatting (e.g., Ksh 6,500)
-          const formattedPrice = Number(data[i].price).toLocaleString('en-KE');
-
           element.insertAdjacentHTML(
             "beforeend",
             `<div class="flex-col gap-4">
@@ -88,7 +83,11 @@ const getAllProduct = (target = "#products", total = 8) => {
                       data[i].title
                     }</h2>
                   </a>
-                  <span class="font-medium">Ksh ${formattedPrice}</span>
+                  <span class="font-medium">IDR ${
+                    (data[i].price * 14000) // 1 dollar = 14.000 jadi dikali
+                      .toString() // dijadikan string
+                      .replace(/\B(?=(\d{3})+(?!\d))/g, ".") // regex setelah angka 3 isi titik
+                  } </span>
                 </div>
               </div>`
           );
